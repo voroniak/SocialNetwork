@@ -9,10 +9,12 @@ namespace SocialNetwork.Api.Data.Services.Implementation
     public class UserManagerService
     {
         private UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public UserManagerService(UserManager<ApplicationUser> userManager)
+        public UserManagerService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
-            _userManager = userManager; 
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
         public async Task<string> GetUserIdAsync(ClaimsPrincipal user)
         {
@@ -36,6 +38,17 @@ namespace SocialNetwork.Api.Data.Services.Implementation
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
             return result;
+        }
+        public async Task<SignInResult> SignInAsync(LoginDto loginDto)
+        {
+            var user = await _userManager.FindByEmailAsync(loginDto.Email);
+            var result = await _signInManager.PasswordSignInAsync(user, loginDto.Password, loginDto.RememberMe, true);
+            return result;
+        }
+
+        public async Task SignOutAsync()
+        {
+            await _signInManager.SignOutAsync();
         }
     }
 }
