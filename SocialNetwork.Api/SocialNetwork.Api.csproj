@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Services\" />
+    <Folder Include="Data\Services\Interfaces\" />
   </ItemGroup>
 
 

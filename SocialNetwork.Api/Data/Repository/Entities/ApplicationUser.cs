@@ -1,9 +1,11 @@
 ﻿using AspNetCore.Identity.MongoDbCore.Models;
+using MongoDbGenericRepository.Attributes;
 using System;
 
 namespace SocialNetwork.Api.Data.Repository.Entities
 {
-    public class ApplicationUser: MongoIdentityUser<Guid>
+	[CollectionName("Users")]
+	public class ApplicationUser: MongoIdentityUser<Guid>
     {
 		public ApplicationUser() : base()
 		{
@@ -12,5 +14,7 @@ namespace SocialNetwork.Api.Data.Repository.Entities
 		public ApplicationUser(string userName, string email) : base(userName, email)
 		{
 		}
+        public string FirstName { get; set; }
+		public string LastName { get; set; }
 	}
 }
