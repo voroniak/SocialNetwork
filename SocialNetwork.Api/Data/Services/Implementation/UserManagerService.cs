@@ -12,8 +12,7 @@ namespace SocialNetwork.Api.Data.Services.Implementation
 
         public UserManagerService(UserManager<ApplicationUser> userManager)
         {
-            _userManager = userManager;
-          
+            _userManager = userManager; 
         }
         public async Task<string> GetUserIdAsync(ClaimsPrincipal user)
         {

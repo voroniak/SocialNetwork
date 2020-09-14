@@ -17,6 +17,7 @@ using Microsoft.Extensions.Options;
 using SocialNetwork.Api.Data.Repository.Entities;
 using SocialNetwork.Api.Data.Repository.Repo;
 using SocialNetwork.Api.Data.Repository.Settings;
+using SocialNetwork.Api.Data.Services.Implementation;
 
 namespace SocialNetwork.Api
 {
@@ -65,7 +66,8 @@ namespace SocialNetwork.Api
             };
             services.ConfigureMongoDbIdentity<ApplicationUser, ApplicationRole, Guid>(mongoDbIdentityConfiguration);
             services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
-            services.AddControllers();
+            services.AddScoped<UserManagerService>();
+            services.AddControllers().AddNewtonsoftJson(options => options.UseMemberCasing());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
