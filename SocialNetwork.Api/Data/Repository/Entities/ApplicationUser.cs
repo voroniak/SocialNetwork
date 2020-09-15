@@ -19,5 +19,8 @@ namespace SocialNetwork.Api.Data.Repository.Entities
 		public string LastName { get; set; }
 		public IEquatable<string> Interests { get; set; }
 		public IEquatable<ObjectId> Posts { get; set; }
+		public IEquatable<ObjectId> Followers { get; set; }
+		public IEquatable<ObjectId> Folowing { get; set; }
+
 	}
 }

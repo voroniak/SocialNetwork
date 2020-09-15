@@ -68,6 +68,7 @@ namespace SocialNetwork.Api
             services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
             services.AddScoped<UserManagerService>();
             services.AddScoped<JwtService>();
+            services.AddScoped<PostService>();
             services.AddControllers().AddNewtonsoftJson(options => options.UseMemberCasing());
         }
 
