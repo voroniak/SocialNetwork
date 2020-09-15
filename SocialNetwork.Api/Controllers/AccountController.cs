@@ -15,10 +15,12 @@ namespace SocialNetwork.Api.Controllers
     public class AccountController : ControllerBase
     {
         private UserManagerService _userManagerService;
+        private readonly JwtService _jwtService;
 
-        public AccountController(UserManagerService userManagerService)
+        public AccountController(UserManagerService userManagerService, JwtService jwtService)
         {
             _userManagerService = userManagerService;
+            _jwtService = jwtService;
         }
         [HttpPost]
         public async Task<IActionResult> Register(RegisterDto registerDto)
@@ -37,29 +39,20 @@ namespace SocialNetwork.Api.Controllers
                 {
                     return BadRequest("Login-NotRegistered");
                 }
-                //else
-                //{
-                //    if (!await _authService.IsEmailConfirmedAsync(user))
-                //    {
-                //        return BadRequest(_resourceForErrors["Login-NotConfirmed"]);
-                //    }
-                //}
+               
                 var result = await _userManagerService.SignInAsync(loginDto);
                 if (result.IsLockedOut)
                 {
                     return BadRequest("Account-Locked");
                 }
-                //if (result.Succeeded)
-                //{
-                //    var generatedToken = await _jwtService.GenerateJWTTokenAsync(user);
-                //    return Ok(new { token = generatedToken });
-                //}
-                //else
-                //{
-                //    return BadRequest(_resourceForErrors["Login-InCorrectPassword"]);
-                //}
+                if (result.Succeeded)
+                {
+                    var generatedToken =  _jwtService.GenerateJWTTokenAsync(user);
+                    return Ok(new { token = generatedToken });
+                }
+               
             }
-            return Ok();
+            return BadRequest();
         }
     }
 }

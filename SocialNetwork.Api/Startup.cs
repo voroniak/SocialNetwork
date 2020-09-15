@@ -34,7 +34,7 @@ namespace SocialNetwork.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<Data.Repository.Settings.MongoDbSettings>(Configuration.GetSection("MongoDbSettings"));
-
+            services.Configure<JwtOptions>(Configuration.GetSection("Jwt"));
             services.AddSingleton<IMongoDbSettings>(serviceProvider =>
                 (IMongoDbSettings)serviceProvider.GetRequiredService<IOptions<Data.Repository.Settings.MongoDbSettings>>().Value);
             //services.AddIdentity<ApplicationUser, ApplicationRole>()
@@ -67,6 +67,7 @@ namespace SocialNetwork.Api
             services.ConfigureMongoDbIdentity<ApplicationUser, ApplicationRole, Guid>(mongoDbIdentityConfiguration);
             services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
             services.AddScoped<UserManagerService>();
+            services.AddScoped<JwtService>();
             services.AddControllers().AddNewtonsoftJson(options => options.UseMemberCasing());
         }
 
