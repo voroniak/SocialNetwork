@@ -50,5 +50,11 @@ namespace SocialNetwork.Api.Data.Services.Implementation
         {
             await _signInManager.SignOutAsync();
         }
+        public async Task<ApplicationUser> FindByEmailAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            return user;
+        }
+
     }
 }
