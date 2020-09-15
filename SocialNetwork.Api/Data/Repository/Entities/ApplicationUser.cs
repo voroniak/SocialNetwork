@@ -1,4 +1,5 @@
 ﻿using AspNetCore.Identity.MongoDbCore.Models;
+using MongoDB.Bson;
 using MongoDbGenericRepository.Attributes;
 using System;
 
@@ -16,5 +17,7 @@ namespace SocialNetwork.Api.Data.Repository.Entities
 		}
         public string FirstName { get; set; }
 		public string LastName { get; set; }
+		public IEquatable<string> Interests { get; set; }
+		public IEquatable<ObjectId> Posts { get; set; }
 	}
 }
