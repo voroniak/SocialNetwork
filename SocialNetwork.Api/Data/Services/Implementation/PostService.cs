@@ -1,4 +1,5 @@
-﻿using SocialNetwork.Api.Data.Repository.Entities;
+﻿using MongoDB.Driver;
+using SocialNetwork.Api.Data.Repository.Entities;
 using SocialNetwork.Api.Data.Repository.Repo;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace SocialNetwork.Api.Data.Services.Implementation
         public PostService(IMongoRepository<Post> mongoRepository)
         {
             _mongoRepository = mongoRepository;
+
         }
         public async Task AddPostAsync(Post post)
         {

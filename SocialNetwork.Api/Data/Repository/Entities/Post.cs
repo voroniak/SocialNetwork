@@ -1,21 +1,15 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-using MongoDbGenericRepository.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace SocialNetwork.Api.Data.Repository.Entities
 {
-    [CollectionName("Posts")]
+    [BsonCollection("Posts")]
     public class Post : Document
     {
         public string Text { get; set; }
         
-        public ObjectId UserId { get; set; }
+        public string UserId { get; set; }
 
-        public  IEquatable<ObjectId> Likes { get; set; }
+        public IEnumerable<string> Likes { get; set; }
 
     }
 }

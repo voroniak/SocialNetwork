@@ -2,6 +2,7 @@
 using MongoDB.Bson;
 using MongoDbGenericRepository.Attributes;
 using System;
+using System.Collections.Generic;
 
 namespace SocialNetwork.Api.Data.Repository.Entities
 {
@@ -17,10 +18,8 @@ namespace SocialNetwork.Api.Data.Repository.Entities
 		}
         public string FirstName { get; set; }
 		public string LastName { get; set; }
-		public IEquatable<string> Interests { get; set; }
-		public IEquatable<ObjectId> Posts { get; set; }
-		public IEquatable<ObjectId> Followers { get; set; }
-		public IEquatable<ObjectId> Folowing { get; set; }
+		public IEnumerable<string> Interests { get; set; }
+		public IEnumerable<ObjectId> Followers { get; set; }
 
 	}
 }

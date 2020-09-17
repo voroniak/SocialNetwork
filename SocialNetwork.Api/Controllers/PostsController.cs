@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SocialNetwork.Api.Data.Repository.Entities;
 using SocialNetwork.Api.Data.Services.Implementation;
 
 namespace SocialNetwork.Api.Controllers
@@ -17,6 +18,13 @@ namespace SocialNetwork.Api.Controllers
         public PostsController(PostService postService)
         {
             _postService = postService;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(Post post)
+        {
+            await _postService.AddPostAsync(post);
+            return Created("Add", post);
         }
     }
 }

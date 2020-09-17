@@ -33,13 +33,7 @@ namespace SocialNetwork.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<Data.Repository.Settings.MongoDbSettings>(Configuration.GetSection("MongoDbSettings"));
-            services.Configure<JwtOptions>(Configuration.GetSection("Jwt"));
-            services.AddSingleton<IMongoDbSettings>(serviceProvider =>
-                (IMongoDbSettings)serviceProvider.GetRequiredService<IOptions<Data.Repository.Settings.MongoDbSettings>>().Value);
-            //services.AddIdentity<ApplicationUser, ApplicationRole>()
-               //     .AddMongoDbStores<ApplicationUser, ApplicationRole, Guid>("mongodb://localhost:27017","MongoDbTests")
-               //     .AddDefaultTokenProviders();
+           
             var mongoDbIdentityConfiguration = new MongoDbIdentityConfiguration
             {
                 MongoDbSettings = new AspNetCore.Identity.MongoDbCore.Infrastructure.MongoDbSettings
@@ -64,6 +58,13 @@ namespace SocialNetwork.Api
                     options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@.-_";
                 }
             };
+            services.Configure<Data.Repository.Settings.MongoDbSettings>(Configuration.GetSection("MongoDbSettings"));
+            services.Configure<JwtOptions>(Configuration.GetSection("Jwt"));
+            services.AddSingleton<IMongoDbSettings>(serviceProvider =>
+               (IMongoDbSettings)serviceProvider.GetRequiredService<IOptions<Data.Repository.Settings.MongoDbSettings>>().Value);
+      //      services.AddIdentity<ApplicationUser, ApplicationRole>()
+        //            .AddMongoDbStores<ApplicationUser, ApplicationRole, Guid>("mongodb://localhost:27017", "MongoDbTests")
+          //          .AddDefaultTokenProviders();
             services.ConfigureMongoDbIdentity<ApplicationUser, ApplicationRole, Guid>(mongoDbIdentityConfiguration);
             services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
             services.AddScoped<UserManagerService>();
