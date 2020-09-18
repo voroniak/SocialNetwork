@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SocialNetwork.Api.Data.DTOs;
-using SocialNetwork.Api.Data.Repository.Entities;
 using SocialNetwork.Api.Data.Services.Implementation;
 
 namespace SocialNetwork.Api.Controllers
@@ -32,13 +27,13 @@ namespace SocialNetwork.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _postService.GetAll());
+            return Ok(await _postService.GetAllAsync());
         }
 
         [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetByUserId(string userId)
         {
-            return Ok(await _postService.GetByUserId(userId));
+            return Ok(await _postService.GetByUserIdAsync(userId));
         }
         [HttpPut]
         public async Task<IActionResult> Edit(PostEditDto post)
