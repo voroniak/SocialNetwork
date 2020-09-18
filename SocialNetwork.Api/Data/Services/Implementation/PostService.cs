@@ -25,11 +25,11 @@ namespace SocialNetwork.Api.Data.Services.Implementation
         {
             await _mongoRepository.InsertOneAsync(_mapper.Map<PostDto, Post>(post));
         }
-        public async Task<IEnumerable<PostDto>> GetAll()
+        public async Task<IEnumerable<PostDto>> GetAllAsync()
         {
             return _mapper.Map<IEnumerable<Post>, IEnumerable<PostDto>>(await _mongoRepository.FilterByAsync(_ => true));
         }
-        public async Task<IEnumerable<PostDto>> GetByUserId(string userId)
+        public async Task<IEnumerable<PostDto>> GetByUserIdAsync(string userId)
         {
             var res = await _mongoRepository.FilterByAsync(p => p.UserId == userId);
             return _mapper.Map<IEnumerable<Post>, IEnumerable<PostDto>>(res);
