@@ -36,5 +36,10 @@ namespace SocialNetwork.Api.Data.Services.Implementation
             p.Text = post.Text;
             await _mongoRepository.ReplaceOneAsync(p);
         }
+        public async Task DeleteAsync(string postId)
+        {
+
+            await _mongoRepository.DeleteByIdAsync(postId);
+        }
     }
 }

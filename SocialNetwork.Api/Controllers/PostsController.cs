@@ -35,12 +35,21 @@ namespace SocialNetwork.Api.Controllers
         {
             return Ok(await _postService.GetByUserIdAsync(userId));
         }
+
         [HttpPut]
         public async Task<IActionResult> Edit(PostEditDto post)
         {
             await _postService.EditAsync(post);
 
-            return Created("Add", post);
+            return NoContent();
+        }
+
+        [HttpDelete("{postId}")]
+        public async Task<IActionResult> Delete( string postId)
+        {
+            await _postService.DeleteAsync(postId);
+
+            return NoContent();
         }
     }
 }
