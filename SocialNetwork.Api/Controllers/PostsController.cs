@@ -25,6 +25,7 @@ namespace SocialNetwork.Api.Controllers
         public async Task<IActionResult> Add(PostDto post)
         {
             await _postService.AddPostAsync(post);
+
             return Created("Add", post);
         }
 
@@ -33,10 +34,18 @@ namespace SocialNetwork.Api.Controllers
         {
             return Ok(await _postService.GetAll());
         }
+
         [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetByUserId(string userId)
         {
             return Ok(await _postService.GetByUserId(userId));
+        }
+        [HttpPut]
+        public async Task<IActionResult> Edit(PostEditDto post)
+        {
+            await _postService.EditAsync(post);
+
+            return Created("Add", post);
         }
     }
 }

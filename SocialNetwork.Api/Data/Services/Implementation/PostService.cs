@@ -34,5 +34,11 @@ namespace SocialNetwork.Api.Data.Services.Implementation
             var res = await _mongoRepository.FilterByAsync(p => p.UserId == userId);
             return _mapper.Map<IEnumerable<Post>, IEnumerable<PostDto>>(res);
         }
+        public async Task EditAsync(PostEditDto post)
+        {
+            var p = await _mongoRepository.FindByIdAsync(post.Id);
+            p.Text = post.Text;
+            await _mongoRepository.ReplaceOneAsync(p);
+        }
     }
 }
