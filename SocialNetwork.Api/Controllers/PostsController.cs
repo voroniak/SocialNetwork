@@ -27,5 +27,11 @@ namespace SocialNetwork.Api.Controllers
             await _postService.AddPostAsync(post);
             return Created("Add", post);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await _postService.GetAll());
+        }
     }
 }

@@ -24,5 +24,10 @@ namespace SocialNetwork.Api.Data.Services.Implementation
         {
             await _mongoRepository.InsertOneAsync(_mapper.Map<PostDto,Post>(post));
         }
+        public async Task<IEnumerable<PostDto>> GetAll()
+        {
+         return _mapper.Map<IEnumerable<Post>,IEnumerable <PostDto >>(await _mongoRepository.FilterByAsync(_ => true));
+        }
+
     }
 }

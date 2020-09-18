@@ -39,7 +39,11 @@ namespace SocialNetwork.Api.Data.Repository.Repo
         {
             return _collection.Find(filterExpression).ToEnumerable();
         }
-
+        public virtual Task<IEnumerable<TDocument>> FilterByAsync(
+            Expression<Func<TDocument, bool>> filterExpression)
+        {
+            return  Task.Run(()=>_collection.Find(filterExpression).ToEnumerable());
+        }
         public virtual IEnumerable<TProjected> FilterBy<TProjected>(
             Expression<Func<TDocument, bool>> filterExpression,
             Expression<Func<TDocument, TProjected>> projectionExpression)
