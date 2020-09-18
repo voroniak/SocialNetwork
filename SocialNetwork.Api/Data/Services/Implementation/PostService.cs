@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using SocialNetwork.Api.Data.DTOs;
 using SocialNetwork.Api.Data.Repository.Entities;
@@ -22,12 +23,16 @@ namespace SocialNetwork.Api.Data.Services.Implementation
         }
         public async Task AddPostAsync(PostDto post)
         {
-            await _mongoRepository.InsertOneAsync(_mapper.Map<PostDto,Post>(post));
+            await _mongoRepository.InsertOneAsync(_mapper.Map<PostDto, Post>(post));
         }
         public async Task<IEnumerable<PostDto>> GetAll()
         {
-         return _mapper.Map<IEnumerable<Post>,IEnumerable <PostDto >>(await _mongoRepository.FilterByAsync(_ => true));
+            return _mapper.Map<IEnumerable<Post>, IEnumerable<PostDto>>(await _mongoRepository.FilterByAsync(_ => true));
         }
-
+        public async Task<IEnumerable<PostDto>> GetByUserId(string userId)
+        {
+            var res = await _mongoRepository.FilterByAsync(p => p.UserId == userId);
+            return _mapper.Map<IEnumerable<Post>, IEnumerable<PostDto>>(res);
+        }
     }
 }

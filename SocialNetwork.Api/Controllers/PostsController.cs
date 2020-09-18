@@ -33,5 +33,10 @@ namespace SocialNetwork.Api.Controllers
         {
             return Ok(await _postService.GetAll());
         }
+        [HttpGet("user/{userId}")]
+        public async Task<IActionResult> GetByUserId(string userId)
+        {
+            return Ok(await _postService.GetByUserId(userId));
+        }
     }
 }
