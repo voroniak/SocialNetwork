@@ -2,6 +2,7 @@
 using SocialNetwork.Api.Data.DTOs;
 using SocialNetwork.Api.Data.Repository.Entities;
 using SocialNetwork.Api.Data.Repository.Repo;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -20,6 +21,12 @@ namespace SocialNetwork.Api.Data.Services.Implementation
 
         public async Task AddAsync(LikePostDto likePostDto)
         {
+         var itemForCheckIsExcist =  await _mongoRepository
+                .FilterByAsync(l => l.UserId == likePostDto.UserId && l.LikedEntityId == likePostDto.LikedEntityId);
+            if(itemForCheckIsExcist != null)
+            {
+                throw new ArgumentException("User has already liked this entity");
+            }
             await _mongoRepository.InsertOneAsync(_mapper.Map<LikePostDto, Like>(likePostDto));
         }
 
