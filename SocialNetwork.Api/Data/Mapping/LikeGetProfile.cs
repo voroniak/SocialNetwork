@@ -4,11 +4,11 @@ using SocialNetwork.Api.Data.Repository.Entities;
 
 namespace SocialNetwork.Api.Data.Mapping
 {
-    public class LikePostProfile: Profile
+    public class LikeGetProfile: Profile
     {
-        public LikePostProfile()
+        public LikeGetProfile()
         {
-            CreateMap<Like, LikePostDto>().ReverseMap();
+            CreateMap<LikeGetDto, Like>().ReverseMap();
         }
     }
 }

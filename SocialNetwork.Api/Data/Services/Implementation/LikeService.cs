@@ -2,6 +2,7 @@
 using SocialNetwork.Api.Data.DTOs;
 using SocialNetwork.Api.Data.Repository.Entities;
 using SocialNetwork.Api.Data.Repository.Repo;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SocialNetwork.Api.Data.Services.Implementation
@@ -27,5 +28,13 @@ namespace SocialNetwork.Api.Data.Services.Implementation
             await _mongoRepository.DeleteByIdAsync(likeId);
         }
 
+        public async Task<IEnumerable<LikeGetDto>> GetAllPostLikesAsync(string postId)
+        {
+
+            return _mapper.Map<IEnumerable<Like>, IEnumerable<LikeGetDto>>
+                (
+                await _mongoRepository.FilterByAsync(l => l.LikedEntityId == postId)
+                );
+        }
     }
 }
