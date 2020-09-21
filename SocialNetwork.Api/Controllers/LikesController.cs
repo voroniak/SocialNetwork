@@ -23,9 +23,18 @@ namespace SocialNetwork.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(LikePostDto likePostDto)
         {
-            await _likeService.Add(likePostDto);
+            await _likeService.AddAsync(likePostDto);
 
             return Created("Add", likePostDto);
         }
+
+        [HttpDelete("likeId")]
+        public async Task<IActionResult> Delete(string likeId)
+        {
+            await _likeService.DeleteAsync(likeId);
+
+            return NoContent();
+        }
+
     }
 }

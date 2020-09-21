@@ -17,9 +17,15 @@ namespace SocialNetwork.Api.Data.Services.Implementation
             _mapper = mapper;
         }
 
-        public async Task Add(LikePostDto likePostDto)
+        public async Task AddAsync(LikePostDto likePostDto)
         {
             await _mongoRepository.InsertOneAsync(_mapper.Map<LikePostDto, Like>(likePostDto));
         }
+
+        public async Task DeleteAsync(string likeId)
+        {
+            await _mongoRepository.DeleteByIdAsync(likeId);
+        }
+
     }
 }
