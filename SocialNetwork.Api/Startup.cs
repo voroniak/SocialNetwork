@@ -34,7 +34,7 @@ namespace SocialNetwork.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           
+
             var mongoDbIdentityConfiguration = new MongoDbIdentityConfiguration
             {
                 MongoDbSettings = new AspNetCore.Identity.MongoDbCore.Infrastructure.MongoDbSettings
@@ -63,9 +63,9 @@ namespace SocialNetwork.Api
             services.Configure<JwtOptions>(Configuration.GetSection("Jwt"));
             services.AddSingleton<IMongoDbSettings>(serviceProvider =>
                (IMongoDbSettings)serviceProvider.GetRequiredService<IOptions<Data.Repository.Settings.MongoDbSettings>>().Value);
-      //      services.AddIdentity<ApplicationUser, ApplicationRole>()
-        //            .AddMongoDbStores<ApplicationUser, ApplicationRole, Guid>("mongodb://localhost:27017", "MongoDbTests")
-          //          .AddDefaultTokenProviders();
+            //      services.AddIdentity<ApplicationUser, ApplicationRole>()
+            //            .AddMongoDbStores<ApplicationUser, ApplicationRole, Guid>("mongodb://localhost:27017", "MongoDbTests")
+            //          .AddDefaultTokenProviders();
             services.ConfigureMongoDbIdentity<ApplicationUser, ApplicationRole, Guid>(mongoDbIdentityConfiguration);
             services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
             services.AddScoped<UserManagerService>();
@@ -74,6 +74,15 @@ namespace SocialNetwork.Api
             services.AddScoped<LikeService>();
             services.AddControllers().AddNewtonsoftJson(options => options.UseMemberCasing());
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v2", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Title = "Place Info Service API",
+                    Version = "v2",
+                    Description = "Sample service for Learner",
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -94,6 +103,8 @@ namespace SocialNetwork.Api
             {
                 endpoints.MapControllers();
             });
+            app.UseSwagger();
+            app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v2/swagger.json", "PlaceInfo Services"));
         }
     }
 }
