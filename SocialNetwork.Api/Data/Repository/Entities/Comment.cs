@@ -1,6 +1,7 @@
 ﻿
 namespace SocialNetwork.Api.Data.Repository.Entities
 {
+    [BsonCollection("Likes")]
     public class Comment: Document
     {
         public string UserId { get; set; }
