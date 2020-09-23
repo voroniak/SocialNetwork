@@ -32,5 +32,13 @@ namespace SocialNetwork.Api.Controllers
 
             return Created("Add", commentPostDto);
         }
+
+        [HttpPut]
+        public async Task<IActionResult> Edit(CommentPutDto commentPutDto)
+        {
+            await _commentService.EditAsync(commentPutDto);
+
+            return NoContent();
+        }
     }
 }

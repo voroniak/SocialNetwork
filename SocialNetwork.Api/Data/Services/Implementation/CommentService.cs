@@ -41,14 +41,14 @@ namespace SocialNetwork.Api.Data.Services.Implementation
                 await _mongoRepository.FilterByAsync(c => c.CommentedEntityId == commentedEntityId)
                 );
         }
-        public async Task EditAsync(string commentId, string commentText)
+        public async Task EditAsync(CommentPutDto commentPutDto)
         {
-            var commentToEdit = await _mongoRepository.FindByIdAsync(commentId);
+            var commentToEdit = await _mongoRepository.FindByIdAsync(commentPutDto.Id);
             if(commentToEdit == null)
             {
-                throw new ArgumentNullException($"Comment with id {commentId} does not exist");
+                throw new ArgumentNullException($"Comment with id {commentPutDto.Id} does not exist");
             }
-            commentToEdit.Text = commentText;
+            commentToEdit.Text = commentPutDto.Text;
 
             await _mongoRepository.ReplaceOneAsync(commentToEdit);
         }
