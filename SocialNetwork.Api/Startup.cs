@@ -72,6 +72,7 @@ namespace SocialNetwork.Api
             services.AddScoped<JwtService>();
             services.AddScoped<PostService>();
             services.AddScoped<LikeService>();
+            services.AddScoped<CommentService>();
             services.AddControllers().AddNewtonsoftJson(options => options.UseMemberCasing());
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddSwaggerGen(options =>
