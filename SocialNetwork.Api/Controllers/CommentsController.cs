@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SocialNetwork.Api.Data.DTOs;
 using SocialNetwork.Api.Data.Services.Implementation;
@@ -17,6 +13,12 @@ namespace SocialNetwork.Api.Controllers
         public CommentsController(CommentService commentService)
         {
             _commentService = commentService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await _commentService.GetAllAsync());
         }
 
         [HttpGet("commentedEntityId")]
