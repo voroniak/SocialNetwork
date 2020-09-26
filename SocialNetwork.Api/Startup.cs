@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using AspNetCore.Identity.MongoDbCore.Extensions;
 using AspNetCore.Identity.MongoDbCore.Infrastructure;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -15,6 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using SocialNetwork.Api.Data.Repository.Entities;
 using SocialNetwork.Api.Data.Repository.Repo;
 using SocialNetwork.Api.Data.Repository.Settings;
@@ -60,7 +63,6 @@ namespace SocialNetwork.Api
                 }
             };
             services.Configure<Data.Repository.Settings.MongoDbSettings>(Configuration.GetSection("MongoDbSettings"));
-            services.Configure<JwtOptions>(Configuration.GetSection("Jwt"));
             services.AddSingleton<IMongoDbSettings>(serviceProvider =>
                (IMongoDbSettings)serviceProvider.GetRequiredService<IOptions<Data.Repository.Settings.MongoDbSettings>>().Value);
             //      services.AddIdentity<ApplicationUser, ApplicationRole>()
@@ -75,6 +77,25 @@ namespace SocialNetwork.Api
             services.AddScoped<CommentService>();
             services.AddControllers().AddNewtonsoftJson(options => options.UseMemberCasing());
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(config =>
+            {
+                config.RequireHttpsMetadata = false;
+                config.SaveToken = true;
+
+                config.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidIssuer = Configuration["Jwt:Issuer"],
+                    ValidAudience = Configuration["Jwt:Audience"],
+                    ValidateLifetime = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
+            services.Configure<JwtOptions>(Configuration.GetSection("Jwt"));
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v2", new Microsoft.OpenApi.Models.OpenApiInfo
@@ -97,7 +118,7 @@ namespace SocialNetwork.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
