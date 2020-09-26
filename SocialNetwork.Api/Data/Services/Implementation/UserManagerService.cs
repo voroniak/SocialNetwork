@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SocialNetwork.Api.Data.DTOs;
 using SocialNetwork.Api.Data.Repository.Entities;
+using SocialNetwork.Api.Data.Repository.Repo;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -10,11 +12,14 @@ namespace SocialNetwork.Api.Data.Services.Implementation
     {
         private UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-
-        public UserManagerService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        private IMongoRepository<User> _mongoRepository;
+        public UserManagerService(UserManager<ApplicationUser> userManager,
+                                  SignInManager<ApplicationUser> signInManager,
+                                  IMongoRepository<User> mongoRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _mongoRepository = mongoRepository;
         }
         public async Task<string> GetUserIdAsync(ClaimsPrincipal user)
         {
@@ -28,15 +33,29 @@ namespace SocialNetwork.Api.Data.Services.Implementation
         }
         public async Task<IdentityResult> CreateUserAsync(RegisterDto registerDto)
         {
+            await _mongoRepository.InsertOneAsync(new User {
+                                                            FirstName = registerDto.FirstName,
+                                                            LastName = registerDto.LastName
+                                                            });
+          var regUser=(await _mongoRepository.FilterByAsync(u => u.FirstName == registerDto.FirstName && u.LastName == registerDto.LastName))
+                .LastOrDefault();
+            var id = regUser.Id.ToString();
             var user = new ApplicationUser()
             {
                 Email = registerDto.Email,
                 UserName = registerDto.Email,
                 LastName = registerDto.LastName,
                 FirstName = registerDto.FirstName,
+                UserId = regUser.Id.ToString()
             };
+           
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
+
+            var createdUser = await _userManager.FindByEmailAsync(registerDto.Email);
+            var createdId = createdUser.Id.ToString();
+            regUser.AplplicationUserId = createdId;
+            await _mongoRepository.ReplaceOneAsync(regUser);
             return result;
         }
         public async Task<SignInResult> SignInAsync(LoginDto loginDto)
@@ -56,5 +75,10 @@ namespace SocialNetwork.Api.Data.Services.Implementation
             return user;
         }
 
+        public async Task<User> GetUserByIdAsync(string userId)
+        {
+         return  await _mongoRepository.FindOneAsync(u => u.AplplicationUserId == userId);
+        }
+       
     }
 }

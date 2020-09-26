@@ -54,5 +54,10 @@ namespace SocialNetwork.Api.Controllers
             }
             return BadRequest();
         }
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> GetUserById(string userId)
+        {
+            return Ok(await _userManagerService.GetUserByIdAsync(userId));
+        }
     }
 }

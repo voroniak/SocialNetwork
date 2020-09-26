@@ -18,8 +18,7 @@ namespace SocialNetwork.Api.Data.Repository.Entities
 		}
         public string FirstName { get; set; }
 		public string LastName { get; set; }
-		public IEnumerable<string> Interests { get; set; }
-		public IEnumerable<ObjectId> Followers { get; set; }
+		public string UserId { get; set; }
 
 	}
 }
