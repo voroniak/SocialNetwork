@@ -4,11 +4,11 @@ using SocialNetwork.Api.Data.Repository.Entities;
 
 namespace SocialNetwork.Api.Data.Mapping
 {
-    public class UserProfile: Profile
+    public class ApplicationUserProfile: Profile
     {
-        public UserProfile()
+        public ApplicationUserProfile()
         {
-            CreateMap<User, UserDto>().ReverseMap();
+            CreateMap<ApplicationUser, UserDto>().ReverseMap();
         }
     }
 }
