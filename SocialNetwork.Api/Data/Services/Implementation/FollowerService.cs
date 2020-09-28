@@ -43,7 +43,7 @@ namespace SocialNetwork.Api.Data.Services.Implementation
         }
 
 
-        public async Task<IEnumerable<UserDto>> GetAllUserFollowers(string userId)
+        public async Task<IEnumerable<UserDto>> GetAllUserFollowersAsync(string userId)
         {
             return _mapper.Map<IEnumerable<User>, IEnumerable<UserDto>>
                 (
@@ -51,7 +51,7 @@ namespace SocialNetwork.Api.Data.Services.Implementation
                 );
         }
 
-        public async Task<IEnumerable<UserDto>> GetAllUserFollowing(string userId)
+        public async Task<IEnumerable<UserDto>> GetAllUserFollowingAsync(string userId)
         {
             var user = await _mongoRepository
                    .FindOneAsync(u => u.Id.ToString() == userId);

@@ -39,13 +39,13 @@ namespace SocialNetwork.Api.Controllers
         [HttpGet("Followers")]
         public async Task<IActionResult> GetAllUserFollowers(string userId)
         {
-           return Ok(await _followerService.GetAllUserFollowers(userId));
+           return Ok(await _followerService.GetAllUserFollowersAsync(userId));
         }
 
         [HttpGet("Following")]
         public async Task<IActionResult> GetAllUserFollowing(string userId)
         {
-          return Ok(  await _followerService.GetAllUserFollowing(userId));
+          return Ok(  await _followerService.GetAllUserFollowingAsync(userId));
         }
     }
 }
