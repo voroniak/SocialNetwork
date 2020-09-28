@@ -75,6 +75,7 @@ namespace SocialNetwork.Api
             services.AddScoped<PostService>();
             services.AddScoped<LikeService>();
             services.AddScoped<CommentService>();
+            services.AddScoped<FollowerService>();
             services.AddControllers().AddNewtonsoftJson(options => options.UseMemberCasing());
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddCors();
