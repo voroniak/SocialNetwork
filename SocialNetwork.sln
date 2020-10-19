@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetwork.UI", "SocialNetwork.UI\SocialNetwork.UI.csproj", "{39B85939-BF61-4127-A18B-F91DF6920F6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialNetwork.UI", "SocialNetwork.UI\SocialNetwork.UI.csproj", "{39B85939-BF61-4127-A18B-F91DF6920F6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetwork.Api", "SocialNetwork.Api\SocialNetwork.Api.csproj", "{B6AE5B44-0531-4F7C-ADFF-F4F164AC8CB7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialNetwork.Api", "SocialNetwork.Api\SocialNetwork.Api.csproj", "{B6AE5B44-0531-4F7C-ADFF-F4F164AC8CB7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialNetwork.DataAccess.Neo4J", "SocialNetwork.DataAccess.Neo4J\SocialNetwork.DataAccess.Neo4J.csproj", "{F5B66EDA-D29E-43A2-9670-A1E8BB848EDC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{B6AE5B44-0531-4F7C-ADFF-F4F164AC8CB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6AE5B44-0531-4F7C-ADFF-F4F164AC8CB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6AE5B44-0531-4F7C-ADFF-F4F164AC8CB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5B66EDA-D29E-43A2-9670-A1E8BB848EDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5B66EDA-D29E-43A2-9670-A1E8BB848EDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5B66EDA-D29E-43A2-9670-A1E8BB848EDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5B66EDA-D29E-43A2-9670-A1E8BB848EDC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
