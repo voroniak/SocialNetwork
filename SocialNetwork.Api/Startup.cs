@@ -22,6 +22,8 @@ using SocialNetwork.Api.Data.Repository.Entities;
 using SocialNetwork.Api.Data.Repository.Repo;
 using SocialNetwork.Api.Data.Repository.Settings;
 using SocialNetwork.Api.Data.Services.Implementation;
+using SocialNetwork.DataAccess.Neo4J.Interfaces;
+using SocialNetwork.DataAccess.Neo4J.Repository;
 
 namespace SocialNetwork.Api
 {
@@ -70,6 +72,7 @@ namespace SocialNetwork.Api
             //          .AddDefaultTokenProviders();
             services.ConfigureMongoDbIdentity<ApplicationUser, ApplicationRole, Guid>(mongoDbIdentityConfiguration);
             services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
+            services.AddScoped(typeof(IRepository<>), typeof(Neo4jRepository<>));
             services.AddScoped<UserManagerService>();
             services.AddScoped<JwtService>();
             services.AddScoped<PostService>();

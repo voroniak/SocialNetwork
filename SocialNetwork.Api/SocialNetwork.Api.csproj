@@ -20,5 +20,9 @@
     <Folder Include="Data\Services\Interfaces\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SocialNetwork.DataAccess.Neo4J\SocialNetwork.DataAccess.Neo4J.csproj" />
+  </ItemGroup>
+
 
 </Project>
