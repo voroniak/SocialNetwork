@@ -1,4 +1,5 @@
-﻿using Neo4jClient;
+﻿using Neo4j.Driver;
+using Neo4jClient;
 using SocialNetwork.DataAccess.Neo4J.Entities;
 using SocialNetwork.DataAccess.Neo4J.Interfaces;
 using System;
@@ -11,13 +12,13 @@ using System.Threading.Tasks;
 namespace SocialNetwork.DataAccess.Neo4J.Repository
 {
     public class Neo4jRepository<TEntity> : IRepository<TEntity>
-    where TEntity :  Neo4jEntity, new()
+    where TEntity : Neo4jEntity, new()
     {
         protected readonly GraphClient client;
 
         public Neo4jRepository()
         {
-            client = new GraphClient(new Uri("http://localhost:7474/db/data"));
+            client = new GraphClient(new Uri("http://localhost:7474/db/SocialNetwork"));
             client.ConnectAsync();
         }
 
@@ -166,6 +167,29 @@ namespace SocialNetwork.DataAccess.Neo4J.Repository
                 .AndWhere(query2)
                 .Delete("r")
                 .ExecuteWithoutResultsAsync();
+        }
+        public virtual async Task<int> GetShortestPath<TEntity2, TRelationship>(TEntity entity1, TEntity2 entity2, TRelationship relationship)
+           where TEntity2 : Neo4jEntity, new()
+           where TRelationship : Neo4jRelationship, new()
+        {
+            using var driver = GraphDatabase.Driver(
+                  "neo4j://localhost:7687",
+                  AuthTokens.None
+              );
+            var session = driver.AsyncSession(
+                db => db.WithDatabase("SocialNetwork")
+            );
+            var shortestQuery =
+            @"MATCH (from: " + entity1.Label + @" {UserId :""" + entity1.Label + @""" }), (to: " + entity1.Label + @" {UserId :""" + entity1.Label + @""" }) , path = (from)-[:" + relationship.Name + @"*]->(to)
+            RETURN path AS shortestPath,
+                reduce(distance = 0, r in relationships(path) | distance+r.distance) AS totalDistance
+            ORDER BY totalDistance ASC
+            LIMIT 1";
+            var cursor = await session.RunAsync(shortestQuery);
+            var distance =
+                await cursor.SingleAsync(x => x["totalDistance"].As<int>());
+
+            return distance;
         }
     }
 }

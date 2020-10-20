@@ -68,11 +68,19 @@ namespace SocialNetwork.Api.Data.Services.Implementation
             var user = await _mongoRepository
                    .FindOneAsync(u => u.Id.ToString() == userId);
             var users = new List<User>();
-            foreach(var fId in user.Followers)
+            foreach (var fId in user.Followers)
             {
                 users.Add(await _mongoRepository.FindByIdAsync(fId));
             }
             return _mapper.Map<IEnumerable<User>, IEnumerable<UserDto>>(users);
+        }
+
+        public async Task<int> GetShortestPath(string followerUserId, string followingUserId)
+        {
+            return await _neo4JRepository.GetShortestPath<Neo4JUser, Neo4jRelationship>(
+                  new Neo4JUser() { UserId = followerUserId },
+                  new Neo4JUser() { UserId = followingUserId },
+                  new Neo4jRelationship { Name = "Following" });
         }
     }
 }

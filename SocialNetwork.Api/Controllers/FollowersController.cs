@@ -24,7 +24,7 @@ namespace SocialNetwork.Api.Controllers
         public async Task<IActionResult> FollowUser(FollowDto followDto)
         {
             await _followerService.FollowUserAsync(followDto.FollowerUserId, followDto.FollowingUserId);
-            
+
             return NoContent();
         }
 
@@ -36,16 +36,22 @@ namespace SocialNetwork.Api.Controllers
             return NoContent();
         }
 
-        [HttpGet("Followers")]
+        [HttpGet("Followers/{userId}")]
         public async Task<IActionResult> GetAllUserFollowers(string userId)
         {
-           return Ok(await _followerService.GetAllUserFollowersAsync(userId));
+            return Ok(await _followerService.GetAllUserFollowersAsync(userId));
         }
 
-        [HttpGet("Following")]
+        [HttpGet("Following/{userId}")]
         public async Task<IActionResult> GetAllUserFollowing(string userId)
         {
-          return Ok(  await _followerService.GetAllUserFollowingAsync(userId));
+            return Ok(await _followerService.GetAllUserFollowingAsync(userId));
+        }
+
+        [HttpGet("ShortestPath/{followerUserId}/{followingUserId}")]
+        public async Task<IActionResult> GetShortestPath(string followerUserId, string followingUserId)
+        {
+            return Ok(await _followerService.GetShortestPath(followerUserId, followingUserId));
         }
     }
 }
