@@ -3,5 +3,9 @@
     public class User : Neo4jEntity
     {
         public string UserId { get; set; }
+        public User()
+        {
+            Label = "User";
+        }
     }
 }

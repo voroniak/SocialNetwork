@@ -12,7 +12,7 @@ namespace SocialNetwork.Api.Data.Services.Implementation
     public class FollowerService
     {
         private readonly IMongoRepository<User> _mongoRepository;
-        IRepository<DataAccess.Neo4J.Entities.User> _neo4JRepository;
+        private readonly IRepository<DataAccess.Neo4J.Entities.User> _neo4JRepository;
         private readonly IMapper _mapper;
 
         public FollowerService(IMongoRepository<User> mongoRepository, IMapper mapper, IRepository<DataAccess.Neo4J.Entities.User> neo4JRepository)
