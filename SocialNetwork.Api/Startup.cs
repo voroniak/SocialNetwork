@@ -72,7 +72,7 @@ namespace SocialNetwork.Api
             //          .AddDefaultTokenProviders();
             services.ConfigureMongoDbIdentity<ApplicationUser, ApplicationRole, Guid>(mongoDbIdentityConfiguration);
             services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
-            services.AddScoped(typeof(IRepository<>), typeof(Neo4jRepository<>));
+            services.AddScoped(typeof(Neo4jRepository<>));
             services.AddScoped<UserManagerService>();
             services.AddScoped<JwtService>();
             services.AddScoped<PostService>();

@@ -2,7 +2,7 @@
 using SocialNetwork.Api.Data.DTOs;
 using SocialNetwork.Api.Data.Repository.Entities;
 using SocialNetwork.Api.Data.Repository.Repo;
-using SocialNetwork.DataAccess.Neo4J.Interfaces;
+using SocialNetwork.DataAccess.Neo4J.Repository;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -14,15 +14,16 @@ namespace SocialNetwork.Api.Data.Services.Implementation
         private UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private IMongoRepository<User> _mongoRepository;
-        private IRepository<DataAccess.Neo4J.Entities.User> _neo4JRepository;
+        private Neo4jRepository<DataAccess.Neo4J.Entities.User> _neo4JRepository;
         public UserManagerService(UserManager<ApplicationUser> userManager,
                                   SignInManager<ApplicationUser> signInManager,
-                                  IMongoRepository<User> mongoRepository, 
-                                  IRepository<DataAccess.Neo4J.Entities.User> neo4JRepository)
+                                  IMongoRepository<User> mongoRepository,
+                                  Neo4jRepository<DataAccess.Neo4J.Entities.User> neo4JRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _mongoRepository = mongoRepository;
+            _neo4JRepository = neo4JRepository;
         }
         public async Task<string> GetUserIdAsync(ClaimsPrincipal user)
         {
