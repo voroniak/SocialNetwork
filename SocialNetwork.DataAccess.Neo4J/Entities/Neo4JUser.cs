@@ -1,9 +1,9 @@
 ﻿namespace SocialNetwork.DataAccess.Neo4J.Entities
 {
-    public class User : Neo4jEntity
+    public class Neo4JUser : Neo4jEntity
     {
         public string UserId { get; set; }
-        public User()
+        public Neo4JUser()
         {
             Label = "User";
         }

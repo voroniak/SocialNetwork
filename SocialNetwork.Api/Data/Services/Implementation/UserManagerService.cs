@@ -2,6 +2,7 @@
 using SocialNetwork.Api.Data.DTOs;
 using SocialNetwork.Api.Data.Repository.Entities;
 using SocialNetwork.Api.Data.Repository.Repo;
+using SocialNetwork.DataAccess.Neo4J.Entities;
 using SocialNetwork.DataAccess.Neo4J.Repository;
 using System.Linq;
 using System.Security.Claims;
@@ -14,11 +15,11 @@ namespace SocialNetwork.Api.Data.Services.Implementation
         private UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private IMongoRepository<User> _mongoRepository;
-        private Neo4jRepository<DataAccess.Neo4J.Entities.User> _neo4JRepository;
+        private Neo4jRepository<Neo4JUser> _neo4JRepository;
         public UserManagerService(UserManager<ApplicationUser> userManager,
                                   SignInManager<ApplicationUser> signInManager,
                                   IMongoRepository<User> mongoRepository,
-                                  Neo4jRepository<DataAccess.Neo4J.Entities.User> neo4JRepository)
+                                  Neo4jRepository<Neo4JUser> neo4JRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -60,7 +61,7 @@ namespace SocialNetwork.Api.Data.Services.Implementation
             var createdId = createdUser.Id.ToString();
             regUser.AplplicationUserId = createdId;
             await _mongoRepository.ReplaceOneAsync(regUser);
-            await _neo4JRepository.Add(new DataAccess.Neo4J.Entities.User() { UserId = regUser.AplplicationUserId });
+            await _neo4JRepository.Add(new DataAccess.Neo4J.Entities.Neo4JUser() { UserId = regUser.AplplicationUserId });
             return result;
         }
         public async Task<SignInResult> SignInAsync(LoginDto loginDto)

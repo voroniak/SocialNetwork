@@ -2,6 +2,7 @@
 using SocialNetwork.Api.Data.DTOs;
 using SocialNetwork.Api.Data.Repository.Entities;
 using SocialNetwork.Api.Data.Repository.Repo;
+using SocialNetwork.DataAccess.Neo4J.Entities;
 using SocialNetwork.DataAccess.Neo4J.Repository;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,10 @@ namespace SocialNetwork.Api.Data.Services.Implementation
     public class FollowerService
     {
         private readonly IMongoRepository<User> _mongoRepository;
-        private readonly Neo4jRepository<DataAccess.Neo4J.Entities.User> _neo4JRepository;
+        private readonly Neo4jRepository<Neo4JUser> _neo4JRepository;
         private readonly IMapper _mapper;
 
-        public FollowerService(IMongoRepository<User> mongoRepository, IMapper mapper, Neo4jRepository<DataAccess.Neo4J.Entities.User> neo4JRepository)
+        public FollowerService(IMongoRepository<User> mongoRepository, IMapper mapper, Neo4jRepository<Neo4JUser> neo4JRepository)
         {
             _mongoRepository = mongoRepository;
             _mapper = mapper;
@@ -30,6 +31,10 @@ namespace SocialNetwork.Api.Data.Services.Implementation
             {
                 user.Followers.Append(followingUserId);
                 await _mongoRepository.ReplaceOneAsync(user);
+                await _neo4JRepository.Relate<Neo4JUser, Neo4jRelationship>(
+                    u1 => u1.UserId == followerUserId,
+                    u2 => u2.UserId == followingUserId,
+                    new Neo4jRelationship { Name = "Following" });
             }
 
         }
@@ -43,6 +48,10 @@ namespace SocialNetwork.Api.Data.Services.Implementation
                 user.Followers.ToList().Remove(followingUserId);
             }
             await _mongoRepository.ReplaceOneAsync(user);
+            await _neo4JRepository.DeleteRelationship<Neo4JUser, Neo4jRelationship>(
+                    u1 => u1.UserId == followerUserId,
+                    u2 => u2.UserId == followingUserId,
+                    new Neo4jRelationship { Name = "Following" });
         }
 
 
